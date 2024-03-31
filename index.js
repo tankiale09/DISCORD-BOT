@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import { REST, Routes } from 'discord.js';
+import 'dotenv/config'
 
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds,
@@ -7,7 +8,7 @@ const client = new Client({ intents: [
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
 ] });
-const TOKEN = "MTIyMzczMTI0NjkxMjI0MTg0Ng.GLdT5N.WuESiN5Oi0-IpQn3IUe1sqiTcBQHKRNE1no6Y4"
+
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -26,12 +27,11 @@ const commands = [
     },
   ];
   
-  const rest = new REST({ version: '10' }).setToken(TOKEN);
+  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
   
   try {
-    console.log('Started refreshing application (/) commands.');
   
-    await rest.put(Routes.applicationCommands("1223731246912241846"), { body: commands });
+    await rest.put(Routes.applicationCommands(process.env.CLIENT), { body: commands })
   
     console.log('Successfully reloaded application (/) commands.');
   } catch (error) {
@@ -48,4 +48,4 @@ const commands = [
   });
   
 
-client.login(TOKEN)
+client.login(process.env.TOKEN)
